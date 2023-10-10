@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="mapbox/mapbox-gl.css">
+        <link rel="stylesheet" href="css/qgis2web.css">
+        <style>
+        #map {
+            width: 1155px;
+            height: 635px;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map">
+            <nav id="menu"></nav>
+              <div id="distance" class="distance-container"></div>
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="./mapbox/mapbox-gl.js"></script>
+        <script src="data/Area1GRB_0.js"></script>
+        <script src="data/Area1Cont_1.js"></script>
+        <script src="data/Area2GRB_2.js"></script>
+        <script src="data/Area2Cont_3.js"></script>
+        <script src="data/Area2_4.js"></script>
+        <script src="data/Area3GRB_5.js"></script>
+        <script src="data/Area3Cont_6.js"></script>
+        <script src="data/Area3_7.js"></script>
+        <script src="data/Area4GRB_8.js"></script>
+        <script src="data/Area4Cont_9.js"></script>
+        <script src="data/Area4_10.js"></script>
+<script src="./mapbox/style.js"></script>
+<script src="./js/Autolinker.min.js"></script>
+<script>
+var map = new mapboxgl.Map({
+ container: 'map',
+ style: styleJSON,
+ center: [150.68345562325842,-32.57489268394521],
+ zoom: 10,
+ bearing: 360.0,
+ attributionControl: false
+});
+map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+map.addControl(new mapboxgl.AttributionControl({
+    customAttribution: '<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://github.com/mapbox/mapbox-gl-js" target="_blank">Mapbox GL JS</a> &middot; <a href="https://qgis.org" target="_blank">QGIS</a>',
+    compact: false
+}));
+var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+    var toggleableLayerIds = ['lyr_Capture_modified_11_0', 'Capture_modified','lyr_Area4_10_0', 'Area 4','lyr_Area4Cont_9_0', 'Area 4 Cont','lyr_Area4GRB_8_0', 'Area 4 GRB','lyr_Area3_7_0', 'Area 3','lyr_Area3Cont_6_0', 'Area 3 Cont','lyr_Area3GRB_5_0', 'Area 3 GRB','lyr_Area2_4_0', 'Area 2','lyr_Area2Cont_3_0', 'Area 2 Cont','lyr_Area2GRB_2_0', 'Area 2 GRB','lyr_Area1Cont_1_0', 'Area 1 Cont','lyr_Area1GRB_0_0', 'Area 1 GRB '];
+
+    for (var i = 0; i < toggleableLayerIds.length; i=i+2) {
+        var id = toggleableLayerIds[i];
+        var layerName = toggleableLayerIds[i+1]
+
+        var link = document.createElement('a');
+        link.href = '#';
+        link.className = 'active';
+        link.layer = id;
+        link.textContent = layerName;
+
+        link.onclick = function (e) {
+            var clickedLayer = this.layer;
+            e.preventDefault();
+            e.stopPropagation();
+
+            var visibility = map.getLayoutProperty(clickedLayer, 'visibility');
+
+            if (typeof visibility === 'undefined' || visibility == 'visible') {
+                map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+                this.className = '';
+            } else {
+                this.className = 'active';
+                map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
+            }
+        };
+
+        var layers = document.getElementById('menu');
+        layers.appendChild(link);
+    }</script>
+    </body>
+</html>
